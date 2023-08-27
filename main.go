@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"time"
 
 	"github.com/ryanmello/product-microservice/handlers"
@@ -34,9 +35,17 @@ func main(){
 			l.Fatal(err)
 		}
 	}()
+	
+	// allow application to gracefully close
+	// any work going on in the handler will close gracefully
+	// ex: db connections will close, large uploads will finish
+	sigChan := make(chan os.Signal)
+	signal.Notify(sigChan, os.Interrupt)
+	signal.Notify(sigChan, os.Kill)
 
+	sig := <- sigChan
+	l.Println("Recieved terminate, graceful shutdown", sig)
 	
-	
-	tc := context.WithDeadline(context.Background(), 30 *time.Second)
+	tc, _ := context.WithTimeout(context.Background(), 30 *time.Second)
 	s.Shutdown(tc)
 }
