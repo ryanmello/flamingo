@@ -16,7 +16,7 @@ func NewProducts(l *log.Logger) *Products {
 	return &Products{l}
 }
 
-func (p *Products) ServeHTTP(rw http.ResponseWriter, r *http.Request){
+func (p *Products) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	lp := data.GetProducts()
 	d, err := json.Marshal(lp)
 

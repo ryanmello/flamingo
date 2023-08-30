@@ -12,10 +12,10 @@ type Hello struct {
 }
 
 func NewHello(l *log.Logger) *Hello {
-	return &Hello{ l }
+	return &Hello{l}
 }
 
-func (h *Hello) ServeHTTP(rw http.ResponseWriter, r *http.Request){
+func (h *Hello) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	d, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(rw, "Error occuured", http.StatusBadRequest)
